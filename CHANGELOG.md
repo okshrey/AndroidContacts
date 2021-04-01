@@ -1,6 +1,9 @@
 Changelog
 =========
 
+### 1.14.1 Apr 1, 2021
+> * Added possibility to set limit and offset
+
 ### 1.14.0 May 25, 2020
 > * Added possibility to delete contact
 
