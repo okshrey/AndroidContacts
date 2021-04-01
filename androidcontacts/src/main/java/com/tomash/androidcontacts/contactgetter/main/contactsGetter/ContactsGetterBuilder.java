@@ -15,7 +15,8 @@ import java.util.List;
 
 public class ContactsGetterBuilder {
     private Context mCtx;
-    private Sorting mSortOrder = Sorting.BY_DISPLAY_NAME_ASC;
+    private String mSortOrder = Sorting.BY_DISPLAY_NAME_ASC.getSorting();
+    private String mLimitAndOffset = "";
     private StringBuilder mSelectionBuilder = new StringBuilder();
     private List<String> mParamsList = new ArrayList<>(2);
     private List<BaseFilter> mFilterList = new ArrayList<>(8);
@@ -39,7 +40,17 @@ public class ContactsGetterBuilder {
      * @param sortOrder order to sort
      */
     public ContactsGetterBuilder setSortOrder(Sorting sortOrder) {
+        this.mSortOrder = sortOrder.getSorting();
+        return this;
+    }
+
+    public ContactsGetterBuilder setSortOrder(String sortOrder) {
         this.mSortOrder = sortOrder;
+        return this;
+    }
+
+    public ContactsGetterBuilder setLimitAndOffset(int limit, int offset) {
+        this.mLimitAndOffset = " LIMIT " + limit + " OFFSET " + offset;
         return this;
     }
 
@@ -232,9 +243,9 @@ public class ContactsGetterBuilder {
     private ContactsGetter initGetter() {
         ContactsGetter getter;
         if (mSelectionBuilder.length() == 0)
-            getter = new ContactsGetter(mCtx, mEnabledFields, mSortOrder.getSorting(), null, null);
+            getter = new ContactsGetter(mCtx, mEnabledFields, mSortOrder + mLimitAndOffset, null, null);
         else
-            getter = new ContactsGetter(mCtx, mEnabledFields, mSortOrder.getSorting(), generateSelectionArgs(), generateSelection());
+            getter = new ContactsGetter(mCtx, mEnabledFields, mSortOrder + mLimitAndOffset, generateSelectionArgs(), generateSelection());
         return getter;
     }
 
